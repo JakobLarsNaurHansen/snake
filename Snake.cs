@@ -7,6 +7,7 @@ public class Snake
 {
    public List<Point> SnakeParts; // Holds the position of each snake part
    public Direction CurrentDirection;
+   public int Score;
 
    public Snake(List<Point> snakeParts)
    {
@@ -20,6 +21,7 @@ public class Snake
          new Point(100, 100), // Starting point of the snake
       };
       CurrentDirection = Direction.Right;
+      Score = 0;
    }
    
 }

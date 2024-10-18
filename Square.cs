@@ -1,6 +1,6 @@
 namespace Snake;
 
-public class Square
+public abstract class Square
 {
-    public static int SquareSize = 20;
+    public const int SquareSize = 20;
 }

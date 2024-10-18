@@ -5,64 +5,60 @@ namespace Snake;
 
 public class Food
 {
-    private enum TypeOfFood
+    public enum TypeOfFood
     {
         Normal,
         Special
     }
     public Point FoodPosition; // Position of the food
-    private TypeOfFood _foodType;
+    public TypeOfFood FoodType;
 
-    public Food()
+    public Food(Snake snake)
     {
-       SpawnFood(); 
+       SpawnFood(snake); 
     }
 
-    public Point GetRandomFoodPosition()
+    private Point GetRandomFoodPosition(Snake snake)
     {
         Random rand = new Random();
         int x = rand.Next(0, 400/Square.SquareSize)*Square.SquareSize;
         int y = rand.Next(0, 400/Square.SquareSize)*Square.SquareSize;
+        while (snake.SnakeParts.Contains(new Point(x, y)))
+        {
+            x = rand.Next(0, 400/Square.SquareSize)*Square.SquareSize;
+            y = rand.Next(0, 400/Square.SquareSize)*Square.SquareSize;
+        }
         return new Point(x, y);
     }
 
     public void Eat(Snake snake)
     {
-        if (_foodType==TypeOfFood.Normal)
+        if (FoodType==TypeOfFood.Normal)
         {
-            Point tail = snake.SnakeParts[snake.SnakeParts.Count - 1];
+            Point tail = snake.SnakeParts[^1];
             snake.SnakeParts.Add(new Point(tail.X, tail.Y)); 
         }
-        else if (_foodType==TypeOfFood.Special)
+        else if (FoodType==TypeOfFood.Special)
         {
-            Point tail = snake.SnakeParts[snake.SnakeParts.Count - 1];
-            snake.SnakeParts.Add(new Point(tail.X, tail.Y));
-            snake.SnakeParts.Add(new Point(tail.X, tail.Y));
+            Point tail = snake.SnakeParts[^1];
+            for(int i = 0; i < 5; i++)
+                snake.SnakeParts.Add(new Point(tail.X, tail.Y));
         }
-        // Add a new part to the snake
         
-        // Generate a new food position
-        //TODO Change to spawn food and make the types of food different 
-        FoodPosition = GetRandomFoodPosition();
+        SpawnFood(snake);
     }
 
-    private void SetFoodType()
+    internal void SetFoodType()
     {
         Random rand = new Random();
-        int x = rand.Next(0, 2);
-        if (x == 0)
-        {
-            _foodType = TypeOfFood.Normal;
-        }
-        else
-        {
-            _foodType = TypeOfFood.Special;
-        }
+        int x = rand.Next(0, 10); // 10% chance of special food
+        FoodType = x == 0 ? TypeOfFood.Special : TypeOfFood.Normal;
     }
 
-    private void SpawnFood()
+    private void SpawnFood(Snake snake)
     {
+        
         SetFoodType();
-        FoodPosition = GetRandomFoodPosition();
+        FoodPosition = GetRandomFoodPosition(snake);
     }
 }

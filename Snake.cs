@@ -3,16 +3,11 @@ using Avalonia;
 
 namespace Snake;
 
-public class Snake
+public class Snake(List<Point> snakeParts)
 {
-   public List<Point> SnakeParts; // Holds the position of each snake part
+   public List<Point> SnakeParts = snakeParts; // Holds the position of each snake part
    public Direction CurrentDirection;
    public int Score;
-
-   public Snake(List<Point> snakeParts)
-   {
-      SnakeParts = snakeParts;
-   }
 
    public void InitSnake()
    {

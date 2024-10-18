@@ -84,7 +84,7 @@ namespace Snake
             return false;
         }
 
-        public void GameOver()
+        private void GameOver()
         {
             _gameTimer.Stop();
             Dispatcher.UIThread.InvokeAsync(DrawGameOver);

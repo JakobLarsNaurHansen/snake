@@ -8,7 +8,6 @@ namespace Snake
     {
         private Snake _snake;
         private Food _food;
-        private bool _isRendered;
         private Timer _gameTimer;
     }
 }

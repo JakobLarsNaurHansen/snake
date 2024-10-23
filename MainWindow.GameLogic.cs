@@ -10,8 +10,12 @@ namespace Snake
 {
     public partial class MainWindow : Window
     {
-        private void OnGameTick(object sender, ElapsedEventArgs e)
+        private void OnGameTick(object? sender, ElapsedEventArgs e)
         {
+            if (_moveQueue.Count > 0)
+            {
+                _snake.CurrentDirection = _moveQueue.Dequeue();
+            }
             List<Point> oldPositions = new List<Point>(_snake.SnakeParts);
             Point newHeadPosition = oldPositions[0];
 
@@ -57,7 +61,6 @@ namespace Snake
             Dispatcher.UIThread.InvokeAsync(() =>
             {
                 DrawGame();
-                _isRendered = true;
                 for (int i = 0; i < _snake.SnakeParts.Count; i++)
                 {
                     AnimateSnakePartMovement(oldPositions[i], _snake.SnakeParts[i], (Rectangle)GameArea.Children[i]);

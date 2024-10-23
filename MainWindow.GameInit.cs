@@ -12,6 +12,7 @@ namespace Snake
 {
     public partial class MainWindow : Window
     {
+        private Queue<Direction> _moveQueue;
         public MainWindow()
         {
             InitializeComponent();
@@ -37,8 +38,8 @@ namespace Snake
             _snake = new Snake(new List<Point>());
             _snake.InitSnake();
             _food = new Food(_snake);
+            _moveQueue = new Queue<Direction>();
 
-            _isRendered = true;
             _gameTimer = new Timer();
             _gameTimer.Interval = 100;
             _gameTimer.Elapsed += OnGameTick;
@@ -62,28 +63,34 @@ namespace Snake
                     Close();
                     break;
             }
-            if (!_isRendered) { return; }
+
+            Direction? newDirection = null;
             switch (e.Key)
             {
                 case Key.Up:
                     if (_snake.CurrentDirection != Direction.Down)
-                        _snake.CurrentDirection = Direction.Up;
+                        newDirection = Direction.Up;
                     break;
                 case Key.Down:
                     if (_snake.CurrentDirection != Direction.Up)
-                        _snake.CurrentDirection = Direction.Down;
+                        newDirection = Direction.Down;
                     break;
                 case Key.Left:
                     if (_snake.CurrentDirection != Direction.Right)
-                        _snake.CurrentDirection = Direction.Left;
+                        newDirection = Direction.Left;
                     break;
                 case Key.Right:
                     if (_snake.CurrentDirection != Direction.Left)
-                        _snake.CurrentDirection = Direction.Right;
+                        newDirection = Direction.Right;
                     break;
             }
 
-            _isRendered = false;
+            if (newDirection.HasValue)
+            {
+                _moveQueue.Enqueue(newDirection.Value);
+                Console.WriteLine(_moveQueue.Count);
+            }
+
         }
     }
 }

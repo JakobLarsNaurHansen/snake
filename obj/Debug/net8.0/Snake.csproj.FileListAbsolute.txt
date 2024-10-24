@@ -147,3 +147,4 @@
 /Users/jakob/RiderProjects/Snake/bin/Debug/net8.0/zh-Hant/Microsoft.TestPlatform.CommunicationUtilities.resources.dll
 /Users/jakob/RiderProjects/Snake/bin/Debug/net8.0/zh-Hant/Microsoft.TestPlatform.CrossPlatEngine.resources.dll
 /Users/jakob/RiderProjects/Snake/bin/Debug/net8.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.Common.resources.dll
+/Users/jakob/RiderProjects/Snake/obj/Debug/net8.0/Snake.sourcelink.json

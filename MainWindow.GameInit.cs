@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Timers;
 using Avalonia;
 using Avalonia.Controls;
@@ -7,27 +8,25 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
+using Microsoft.Extensions.Configuration;
 
 namespace Snake
 {
     public partial class MainWindow : Window
     {
         private Queue<Direction> _moveQueue;
+        private readonly DatabaseService _databaseService;
         public MainWindow()
         {
             InitializeComponent();
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+            _databaseService = new DatabaseService(config);
             InitGame();
             Console.WriteLine("Initialized game");
         }
-        private void RestartGame()
-        {
-            _snake = new Snake(new List<Point>());
-            _snake.InitSnake();
-            _food = new Food(_snake);
-            _moveQueue = new Queue<Direction>();
-            
-        }
-
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
@@ -53,50 +52,13 @@ namespace Snake
             _gameTimer.Elapsed += OnGameTick;
             _gameTimer.Start();
         }
-
-        protected override void OnKeyDown(KeyEventArgs e)
+        private void RestartGame()
         {
-            base.OnKeyDown(e);
-            switch (e.Key)
-            {
-                case Key.P:
-                    if (_gameTimer.Enabled)
-                        _gameTimer.Stop();
-                    else _gameTimer.Start();
-                    break;
-                case Key.R:
-                    RestartGame();
-                    break;
-                case Key.Q:
-                    Close();
-                    break;
-            }
-
-            Direction? newDirection = null;
-            switch (e.Key)
-            {
-                case Key.Up:
-                    if (_snake.CurrentDirection != Direction.Down)
-                        newDirection = Direction.Up;
-                    break;
-                case Key.Down:
-                    if (_snake.CurrentDirection != Direction.Up)
-                        newDirection = Direction.Down;
-                    break;
-                case Key.Left:
-                    if (_snake.CurrentDirection != Direction.Right)
-                        newDirection = Direction.Left;
-                    break;
-                case Key.Right:
-                    if (_snake.CurrentDirection != Direction.Left)
-                        newDirection = Direction.Right;
-                    break;
-            }
-
-            if (newDirection.HasValue)
-            {
-                _moveQueue.Enqueue(newDirection.Value);
-            }
+            _snake = new Snake(new List<Point>());
+            _snake.InitSnake();
+            _food = new Food(_snake);
+            _moveQueue = new Queue<Direction>();
+            
         }
     }
 }

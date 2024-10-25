@@ -58,6 +58,7 @@ namespace Snake
             _snake.InitSnake();
             _food = new Food(_snake);
             _moveQueue = new Queue<Direction>();
+            _gameTimer.Start();
             
         }
     }

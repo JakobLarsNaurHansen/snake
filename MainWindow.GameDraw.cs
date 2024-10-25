@@ -189,6 +189,7 @@ namespace Snake
                     DrawTopScores();
                     
                 };
+                
                 double centerX = (GameArea.Width / 2) - 180;
                 double centerY = (GameArea.Height / 2) - 150;
 
@@ -209,7 +210,7 @@ namespace Snake
                 
                 Canvas.SetLeft(submitButton, centerX);
                 Canvas.SetTop(submitButton, centerY + 175);
-
+                
                 GameArea.Children.Add(gameOverText);
                 GameArea.Children.Add(score);
                 GameArea.Children.Add(playAgain);

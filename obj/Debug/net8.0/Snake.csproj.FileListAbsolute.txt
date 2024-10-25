@@ -148,3 +148,14 @@
 /Users/jakob/RiderProjects/Snake/bin/Debug/net8.0/zh-Hant/Microsoft.TestPlatform.CrossPlatEngine.resources.dll
 /Users/jakob/RiderProjects/Snake/bin/Debug/net8.0/zh-Hant/Microsoft.VisualStudio.TestPlatform.Common.resources.dll
 /Users/jakob/RiderProjects/Snake/obj/Debug/net8.0/Snake.sourcelink.json
+/Users/jakob/RiderProjects/Snake/bin/Debug/net8.0/Npgsql.dll
+/Users/jakob/RiderProjects/Snake/bin/Debug/net8.0/DotNetEnv.dll
+/Users/jakob/RiderProjects/Snake/bin/Debug/net8.0/Microsoft.Extensions.Configuration.dll
+/Users/jakob/RiderProjects/Snake/bin/Debug/net8.0/Microsoft.Extensions.Configuration.Abstractions.dll
+/Users/jakob/RiderProjects/Snake/bin/Debug/net8.0/Microsoft.Extensions.Primitives.dll
+/Users/jakob/RiderProjects/Snake/bin/Debug/net8.0/Sprache.dll
+/Users/jakob/RiderProjects/Snake/bin/Debug/net8.0/Microsoft.Extensions.Configuration.FileExtensions.dll
+/Users/jakob/RiderProjects/Snake/bin/Debug/net8.0/Microsoft.Extensions.Configuration.Json.dll
+/Users/jakob/RiderProjects/Snake/bin/Debug/net8.0/Microsoft.Extensions.FileProviders.Abstractions.dll
+/Users/jakob/RiderProjects/Snake/bin/Debug/net8.0/Microsoft.Extensions.FileProviders.Physical.dll
+/Users/jakob/RiderProjects/Snake/bin/Debug/net8.0/Microsoft.Extensions.FileSystemGlobbing.dll

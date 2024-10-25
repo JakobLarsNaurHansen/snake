@@ -1,10 +1,14 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Timers;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using Avalonia.Threading;
+using Microsoft.Extensions.Configuration;
+using Npgsql;
 
 namespace Snake
 {
@@ -118,6 +122,36 @@ namespace Snake
                     FontSize = 16,
                     FontWeight = FontWeight.Bold
                 };
+                var namePromt = new TextBlock
+                {
+                    Text = "Enter your name:",
+                    Foreground = Brushes.Black,
+                    FontSize = 16,
+                    FontWeight = FontWeight.Bold
+                };
+                var nameInput = new TextBox
+                {
+                    Width = 200,
+                    Background = Brushes.White,
+                    Foreground = Brushes.Black,
+                    FontSize = 16,
+                    FontWeight = FontWeight.Bold
+                };
+                var submitButton = new Button
+                {
+                    Content = "Submit",
+                    Width = 100,
+                    Background = Brushes.White,
+                    Foreground = Brushes.Black,
+                    FontSize = 16,
+                    FontWeight = FontWeight.Bold
+                };
+                
+                submitButton.Click += (sender, e) =>
+                {
+                    _snake.Name = nameInput.Text;
+                    if (_snake.Name != null) PostScore(_snake.Name, _snake.Score);
+                };
                 double centerX = (GameArea.Width / 2) - 50;
                 double centerY = (GameArea.Height / 2) - 50;
 
@@ -129,13 +163,67 @@ namespace Snake
 
                 Canvas.SetLeft(playAgain, centerX);
                 Canvas.SetTop(playAgain, centerY + 75);
+                
+                Canvas.SetLeft(namePromt, centerX);
+                Canvas.SetTop(namePromt, centerY + 115);
+                
+                Canvas.SetLeft(nameInput, centerX);
+                Canvas.SetTop(nameInput, centerY + 145);
+                
+                Canvas.SetLeft(submitButton, centerX);
+                Canvas.SetTop(submitButton, centerY + 175);
 
                 GameArea.Children.Add(gameOverText);
                 GameArea.Children.Add(score);
                 GameArea.Children.Add(playAgain);
+                GameArea.Children.Add(namePromt);
+                GameArea.Children.Add(nameInput);
+                GameArea.Children.Add(submitButton);
 
                 GameArea.InvalidateVisual();
             });
+        }
+        private void PostScore(string? username, int score)
+        {
+        try
+        { 
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build(); 
+            var databaseName = config["PostgreSql:DatabaseName"];
+            var databaseUser = config["PostgreSql:User"];
+            var databasePassword = config["PostgreSql:Password"];
+            var databaseHost = config["PostgreSql:Host"];
+            var databasePort = config["PostgreSql:Port"];
+
+            if (string.IsNullOrEmpty(databaseName) || string.IsNullOrEmpty(databaseUser) ||
+                string.IsNullOrEmpty(databasePassword) || string.IsNullOrEmpty(databaseHost) ||
+                string.IsNullOrEmpty(databasePort))
+            {
+                throw new InvalidOperationException("One or more database configuration values are not set.");
+            }
+
+            string connectionString = $"Host={databaseHost};Port={databasePort};Username={databaseUser};Password={databasePassword};Database={databaseName}";
+
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = connection;
+                    cmd.CommandText = "INSERT INTO \x0068ighscore (UserName, Score) VALUES (@username, @score)";
+                    cmd.Parameters.AddWithValue("username", username ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("score", score);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        catch (Exception ex) 
+        {
+            Console.WriteLine($"Error posting high score: {ex.Message}");
+        }
         }
     }
 }

@@ -19,6 +19,14 @@ namespace Snake
             InitGame();
             Console.WriteLine("Initialized game");
         }
+        private void RestartGame()
+        {
+            _snake = new Snake(new List<Point>());
+            _snake.InitSnake();
+            _food = new Food(_snake);
+            _moveQueue = new Queue<Direction>();
+            
+        }
 
         private void InitializeComponent()
         {
@@ -57,7 +65,7 @@ namespace Snake
                     else _gameTimer.Start();
                     break;
                 case Key.R:
-                    InitGame();
+                    RestartGame();
                     break;
                 case Key.Q:
                     Close();
@@ -88,9 +96,7 @@ namespace Snake
             if (newDirection.HasValue)
             {
                 _moveQueue.Enqueue(newDirection.Value);
-                Console.WriteLine(_moveQueue.Count);
             }
-
         }
     }
 }

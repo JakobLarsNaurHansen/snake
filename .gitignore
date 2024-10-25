@@ -1,3 +1,5 @@
 .env
 *.dll
 *.json
+*.cache
+*.info
